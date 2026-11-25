@@ -4,7 +4,12 @@ import { getSession } from "next-auth/react";
 import prismadb from "@/lib/prismadb";
 
 const serverAuth = async (req: NextApiRequest) => {
-  const session = await getSession({ req });
+  const session = await getSession({
+    req: {
+      headers: req.headers,
+      method: "GET",
+    } as NextApiRequest,
+  });
 
   if (!session?.user?.email) {
     throw new Error("Not signed in");
